@@ -266,19 +266,19 @@ Compiling...
 Compile: OK
 
 Executing...
-   Test 1: TEST OK [0.093 secs, 23920 KB]
-   Test 2: TEST OK [0.133 secs, 23872 KB]
-   Test 3: TEST OK [0.103 secs, 23780 KB]
-   Test 4: TEST OK [0.114 secs, 23736 KB]
-   Test 5: TEST OK [0.105 secs, 23944 KB]
-   Test 6: TEST OK [0.098 secs, 23360 KB]
-   Test 7: TEST OK [0.177 secs, 25380 KB]
-   Test 8: TEST OK [0.310 secs, 25464 KB]
-   Test 9: TEST OK [0.208 secs, 26244 KB]
+   Test 1: TEST OK [0.098 secs, 23320 KB]
+   Test 2: TEST OK [0.180 secs, 23812 KB]
+   Test 3: TEST OK [0.114 secs, 23908 KB]
+   Test 4: TEST OK [0.119 secs, 24296 KB]
+   Test 5: TEST OK [0.128 secs, 24660 KB]
+   Test 6: TEST OK [0.121 secs, 24484 KB]
+   Test 7: TEST OK [0.166 secs, 25920 KB]
+   Test 8: TEST OK [0.196 secs, 25600 KB]
+   Test 9: TEST OK [0.189 secs, 26684 KB]
 
 All tests OK.
 Your program ('pprime') produced all correct answers!  This is your
-submission #4 for this problem.  Congratulations!
+submission #9 for this problem.  Congratulations!
 Here are the test data inputs:
 ------- test 1 [length 6 bytes] ----
 5 500
