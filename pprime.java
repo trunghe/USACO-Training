@@ -24,7 +24,7 @@ public class pprime {
     static StringTokenizer st;
     static int a, b;
     static boolean[] notPrime;
-    static LinkedList<Integer> primes;
+    static LinkedList<Integer> oddPrimes;
     static boolean[] boundingDigits;
     static char[] nextBoundingDigits;
 
@@ -46,62 +46,14 @@ public class pprime {
         if (solveTrivialCases()) {
             // If still has more cases
             // Remember a must be at least 3 digits long by now!
-            initPrimes();
+            initOddPrimes();
             initBoundingDigits();
+            a = getValidPalin(a);
+
             StringBuilder strA = new StringBuilder(Integer.toString(a, 10));
             int len = strA.length();
             int halfLen = len / 2;
             int maxA = getMaxPalin(len, halfLen);
-
-            if (a < maxA) {
-                char d1 = strA.charAt(0);
-                char d2 = strA.charAt(len - 1);
-                int i = 1;
-                while (i < halfLen && d1 == d2) {
-                    d1 = strA.charAt(i);
-                    d2 = strA.charAt(len - ++i);
-                }
-                if (i <= halfLen) { // Not a palindrome
-                    if (d1 < d2) { // Need to increase d1, also know that d1 < 9
-                        if (i == 1) { // d1 and d2 are bounding digits
-                            d1 = nextBoundingDigits[d1 - '0']; //
-                        } else {
-                            d1++;
-                        }
-                        strA.setCharAt(i - 1, d1);
-                        strA.setCharAt(len - i, d1);
-                        // Set all digits in the middle to '0'
-                        for (; i < halfLen; i++) {
-                            strA.setCharAt(i, '0');
-                            strA.setCharAt(len - i - 1, '0');
-                        }
-                    } else { // d1 > d2
-                        strA.setCharAt(len - i, d1);
-                        // Set each pair of mirroring digits to the greater of the two.
-                        for (; i < halfLen; i++) {
-                            if ((d1 = strA.charAt(i)) != (d2 = strA.charAt(len - i - 1))) {
-                                if (d1 < d2) {
-                                    strA.setCharAt(i, d2);
-                                    for (i++; i < halfLen; i++) {
-                                        strA.setCharAt(i, '0');
-                                        strA.setCharAt(len - i - 1, '0');
-                                    }
-                                    break;
-                                } else { // d1 > d2
-                                    strA.setCharAt(len - i - 1, d1);
-                                }
-                            }
-                        }
-                    }
-                    a = Integer.parseInt(strA.toString());
-//                    System.out.println("strA = " + strA);
-                }
-            } else if (a > maxA) {
-                len++;
-                halfLen = len / 2;
-                a = getMinPalin(len, halfLen);
-                maxA = getMaxPalin(len, halfLen);
-            }
 
             while (a <= b) {
                 if (isPrime(a)) {
@@ -120,7 +72,26 @@ public class pprime {
         pw.close();                                  // close the output file
     }
 
-    private static int nextValidPalin(int a, StringBuilder strA, int len, int halfLen, int maxA) {
+    private static int getValidPalin(int a) {
+        int t = 101;
+        StringBuilder sb = new StringBuilder(Integer.toString(t, 10));
+        int len = sb.length();
+        int halfLen = len / 2;
+        int maxT = getMaxPalin(len, halfLen);
+        while (t < a) {
+            t = nextValidPalin(t, sb, len, halfLen, maxT);
+            if (t > maxT) {
+                sb = new StringBuilder(Integer.toString(t, 10));
+                len++;
+                halfLen = len / 2;
+                maxT = getMaxPalin(len, halfLen);
+            }
+        }
+        return t;
+    }
+
+    private static int nextValidPalin(int a, StringBuilder strA,
+                                      int len, int halfLen, int maxA) {
         if (a < maxA) {
             char d, nd;
             // a is at least 3 digits long --> halfLen >= 1
@@ -128,6 +99,7 @@ public class pprime {
                 d = strA.charAt(halfLen);
                 nd = (char) ((d - '0' + 1) % 10 + '0');
                 strA.setCharAt(halfLen, nd);
+
                 if (d < '9') {
                     return Integer.parseInt(strA.toString());
                 }
@@ -194,7 +166,7 @@ public class pprime {
     }
 
     private static boolean isPrime(int a) {
-        for (int i : primes) {
+        for (int i : oddPrimes) {
             if (a % i == 0) {
                 return false;
             }
@@ -202,29 +174,28 @@ public class pprime {
         return true;
     }
 
-    private static void initPrimes() {
+    private static void initOddPrimes() {
         int rootB = (int) Math.sqrt(b) + 1;
-        primes = new LinkedList<>();
+        oddPrimes = new LinkedList<>();
         notPrime = new boolean[rootB + 1];
         notPrime[0] = true;
         notPrime[1] = true;
-        for (int i = 4; i <= rootB; i += 2) {
-            notPrime[i] = true;
-        }
-        for (int i = 3; i <= rootB; i++) {
+        for (int i = 2; i <= rootB; i++) {
             if (notPrime[i]) {
                 continue;
             } else {
-                primes.addLast(i);
+                oddPrimes.addLast(i);
                 for (int j = i * 2; j <= rootB; j += i) {
                     notPrime[j] = true;
                 }
+                // If found a valid palindrome then output it anyway
                 if (i >= a && isPalin(Integer.toString(i, 10))) {
                     pw.println(i);
-                    a = i;
+                    a = i + 1;
                 }
             }
         }
+        oddPrimes.removeFirst(); // Remove unnecessary number 2
     }
 
     private static boolean isPalin(String str) {
