@@ -38,11 +38,9 @@ public class numtri {
     }
 
     private static void solve() {
-        if (n > 1) {
-            for (int i = n - 1; i > 0; i--) {
-                for (int j = 0; j < i; j++) {
-                    rows[i - 1][j] += Math.max(rows[i][j], rows[i][j + 1]);
-                }
+        for (int i = n - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                rows[i - 1][j] += Math.max(rows[i][j], rows[i][j + 1]);
             }
         }
         pw.println(rows[0][0]);
