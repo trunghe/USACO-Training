@@ -101,12 +101,8 @@ void solve() {
 
 void output() {
     int i = 0;
-    while (true) {
-        if (i < noCodes) {
-            cout << ans[i++];
-        } else {
-            return;
-        }
+    while (i < noCodes) {
+        cout << ans[i++];
         FOR(j, 0, 9) {
             if (i < noCodes) {
                 cout << " " << ans[i++];
